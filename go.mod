@@ -1,4 +1,4 @@
-module ooxymoron
+module ooxy
 
 go 1.25.0
 

@@ -3,8 +3,8 @@ package server
 import (
 	"fmt"
 	"net"
-	"ooxymoron/pkg/utils"
-	"ooxymoron/pkg/proxy"
+	"ooxy/pkg/proxy"
+	"ooxy/pkg/utils"
 )
 
 type Options struct {
@@ -28,8 +28,8 @@ func (s *Server) Run() error {
 	}
 
 	defer ln.Close()
-	
-	fmt.Printf("Ooxymoron listening on %s -> %s\n", s.opts.ListenAddr, s.opts.UpstreamAddr)
+
+	fmt.Printf("Ooxy listening on %s -> %s\n", s.opts.ListenAddr, s.opts.UpstreamAddr)
 
 	for {
 		conn, err := ln.Accept()
@@ -64,7 +64,7 @@ func handlePacket(buffer []byte) {
 	switch protocol {
 	case "TCP":
 		proxy.proxyTCP()
-	case "UDP"
+	case "UDP":
 		proxy.proxyUDP()
 	default:
 		fmt.Println("unsupported protocol: %s", protocol)

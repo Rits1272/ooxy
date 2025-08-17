@@ -17,7 +17,7 @@ func createGoPacket(buffer []byte) gopacket.Packet {
 	return packet
 }
 
-func CheckProtocol(buffer []byte) string{
+func CheckProtocol(buffer []byte) string {
 	packet := createGoPacket(buffer)
 
 	protocol := nil
