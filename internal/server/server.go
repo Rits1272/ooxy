@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net"
 	"ooxymoron/pkg/utils"
+	"ooxymoron/pkg/proxy"
 )
 
 type Options struct {
@@ -53,8 +54,19 @@ func (s *Server) handleConn(conn net.Conn) {
 			return
 		}
 
-		utils.CheckProtocol(buffer[:readBytes])
+		handlePacket(buffer[:readBytes])
+	}
+}
 
-		fmt.Printf("Received data: %s\n", buffer[:readBytes])
+func handlePacket(buffer []byte) {
+	protocol := utils.CheckProtocol(buffer[:readBytes])
+
+	switch protocol {
+	case "TCP":
+		proxy.proxyTCP()
+	case "UDP"
+		proxy.proxyUDP()
+	default:
+		fmt.Println("unsupported protocol: %s", protocol)
 	}
 }
