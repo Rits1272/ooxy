@@ -1,7 +1,13 @@
-## Ooxy
+## Ooxy  
 
-Inspired by Cloudflare's [Oxy](https://blog.cloudflare.com/introducing-oxy/) framework, Ooxy is a go package that provides network connectors for the internet. Ooxy can be used as a bridege to handle communicatation between different network layers stack.
+Ooxy is a Go package inspired by Cloudflare’s [Oxy](https://blog.cloudflare.com/introducing-oxy/) that provides **network connectors across protocol layers**. It’s designed as a bridge to enable communication between different parts of the network stack.  
 
-Ooxy can be used to proxy traffic with an array of protocols and can be used for various usecases - transparent proxy (with support of CONNECT request) between devices talking in different network protocols, traffic analysis, firewall
+With Ooxy, you can:  
+- Proxy traffic across multiple protocols  
+- Build transparent proxies (with `CONNECT` support)  
+- Analyze traffic or implement custom firewalls  
+- Bridge devices that “speak” different layers  
 
-Atm, actively working on layer 3 to layer 7 connector. This could be used to proxy traffic for layer 3 device to layer 7 proxy like MITM etc. Also includes support of CONNECT request so the upstream proxies know to forward request to the destination server without trying to intercept on their own
+Currently, Ooxy focuses on a **Layer 3 → Layer 7 connector**, useful for scenarios like:  
+- Proxying traffic from a Layer 3 device through a Layer 7 proxy (e.g., MITM)  
+- Supporting `CONNECT` requests so upstream proxies forward traffic correctly without intercepting  
