@@ -1,13 +1,27 @@
-## Ooxy  
+# Ooxy — A Bridge for Raw IP over HTTP/S
 
-Ooxy is a Go package inspired by Cloudflare’s [Oxy](https://blog.cloudflare.com/introducing-oxy/) that provides **network connectors across protocol layers**. It’s designed as a bridge to enable communication between different parts of the network stack.  
+**Inspired by Cloudflare’s Oxy**, **Ooxy** is an early-stage, hackable tool that enables forwarding raw IP traffic (Layer 3 protocols) over HTTP/S proxies like mitmproxy.
 
-With Ooxy, you can:  
-- Proxy traffic across multiple protocols  
-- Build transparent proxies (with `CONNECT` support)  
-- Analyze traffic or implement custom firewalls  
-- Bridge devices that “speak” different layers  
+Ooxy fills the "transparent proxy" gap - ideal when devices can’t speak the same network protocol but need to communicate through restrictive networks.
 
-Currently, Ooxy focuses on a **Layer 3 → Layer 7 connector**, useful for scenarios like:  
-- Proxying traffic from a Layer 3 device through a Layer 7 proxy (e.g., MITM)  
-- Supporting `CONNECT` requests so upstream proxies forward traffic correctly without intercepting  
+> * Note: Still a work-in-progress (WIP), but functional enough for experimentation.*
+
+---
+
+##  Why Ooxy?
+
+- **Real-world problem**: Many networks (corporate, industrial, hotspots) only allow HTTP/S traffic, blocking everything else (SSH, MQTT, RTSP, custom TCP/UDP tools).
+- **Simple bridge**: Ooxy wraps that raw IP traffic inside allowed HTTP/S channels. No need for VPNs or protocol-specific hacks.
+- **Free & hackable**: Unlike closed-source offerings, Ooxy is open source and designed for tinkering and extension.
+
+---
+
+##  Use Cases
+
+| Scenario | Benefit |
+|----------|---------|
+| SSH through a proxy | Developers can SSH into servers from within locked-down networks. |
+| IoT gateways | Devices using MQTT, RTSP, or custom protocols can tunnel through HTTP/S. |
+| Network debugging | Forward tools like `ping` or custom TCP services over HTTP/S for testing. |
+
+ 
