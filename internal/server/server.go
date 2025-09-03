@@ -5,6 +5,8 @@ import (
 	"net"
 	"ooxy/pkg/proxy"
 	"ooxy/pkg/utils"
+	"github.com/google/gopacket"
+	"github.com/google/gopacket/pcap"
 )
 
 type Options struct {
@@ -21,6 +23,7 @@ func NewServer(opts Options) *Server {
 }
 
 func (s *Server) Run() error {
+	sniffPacket()
 	ln, err := net.Listen("tcp", s.opts.ListenAddr)
 
 	if err != nil {
@@ -58,14 +61,40 @@ func (s *Server) handleConn(conn net.Conn) {
 	}
 }
 
+func sniffPacket() {
+	iface := "en0"
+
+	handle, err := pcap.OpenLive(iface, 1600, true, pcap.BlockForever)
+	if err != nil {
+		fmt.Println(err)
+	}
+	defer handle.Close()
+
+	// Only capture IPv4/IPv6 packets
+	if err := handle.SetBPFFilter("ip or ip6"); err != nil {
+		fmt.Println(err)
+	}
+
+	fmt.Println("Capturing Layer 3 packets on", iface)
+
+	packetSource := gopacket.NewPacketSource(handle, handle.LinkType())
+	for packet := range packetSource.Packets() {
+		buffer := packet.Data()
+		handlePacket(buffer)
+	}
+}
+
 func handlePacket(buffer []byte) {
-	protocol := utils.CheckProtocol(buffer[:readBytes])
+	protocol, packet := utils.CheckProtocol(buffer)
+	fmt.Println("PACKET", protocol)
 
 	switch protocol {
 	case "TCP":
-		proxy.proxyTCP()
+		proxy.ProxyTCP(packet)
 	case "UDP":
-		proxy.proxyUDP()
+		proxy.ProxyUDP(packet)
+	case "DNS":
+		fmt.Println("DNS protocol not supported yet")
 	default:
 		fmt.Println("unsupported protocol: %s", protocol)
 	}
